@@ -165,11 +165,14 @@ var update_schedule = function() {
 };
 
 var soundAlarm = function() {
+	console.log('\n\nBEEP BEEP BEEP\n\n')
 	pickRecording(function(rec) {
 		var path = rec.path
-		shell.exec('mpg321 ' + path, function (code, output) {
+		console.log(path);
+		shell.exec('afplay ' + path, function (code, output) {
 			console.log('finished');
-		 	rec.played = true;
+			// TODO: UNCOMMENT THIS
+		 	// rec.played = true;
 		 	console.log(rec);
 			rec.save(function (err, recording) {
 				if (err) return console.error(err);
@@ -182,7 +185,7 @@ var soundAlarm = function() {
 var pickRecording = function(callback) {
 	Recording.find({'played': false}, function (err, unplayed) {
 		if (err || (unplayed.length < 1)) {
-			Recording.find({}, function (err, all) {
+			Recording.find(function (err, all) {
 				// TODO: this fails if there are no recordings.
 				return callback(all[0]);
 			});
