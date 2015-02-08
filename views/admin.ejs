@@ -7,15 +7,19 @@
   	<h1><%= title %></h1>
     
     <form method="post" action="/set_alarm">
+      <% var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] %>
       <% for(var i=0; i<alarms.length; i++) { %>
         <% var alarm = alarms[i] %>
-        <label><%= alarm.dayOfWeek %> </label>
-        <input type="time" value="<%= alarm.datetime %>" name="<%= alarm.dayOfWeek %>">
+        <% var dow = days[alarm.dayOfWeek] %>
+        <label for="time"><%= dow %> </label>
+        <input type="time" value="<%= alarm.time %>" name="times">
+        <label for="enabled">Enabled: </label> 
+        <input type="checkbox" name="enabled" value="<%= i %>" <% if (alarm.enabled) { %> checked <% } %> >
         <br>
       <% } %>
 
       <br>
-      <input value="Upload" type="submit">
+      <input value="Update" type="submit">
     </form>
 
   	</div> <!-- container -->
