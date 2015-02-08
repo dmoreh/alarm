@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><% include partials/page/head.ejs %></head>
+  <body class="<%= classname %>">
+ 	  <% include partials/page/header.ejs %>
+  	<div class='container'>
+      <h1><%= title %></h1>
+      <form method="post" action="/upload_recording" enctype="multipart/form-data">
+  		  <label>Name: </label>
+  		  <input type="text" name="author" maxlength="20" size="20" placeholder="Name">
+  		  <br>
+  		  <label>Audio File: </label>
+  		  <input type="file" accept="audio/*" name="audio"/>
+  		  <br>
+  		  <input value="Upload" type="submit">
+		  </form>
+	</div> <!-- container -->
+ 	<% include partials/page/footer.ejs %>
+ 	<% include partials/page/jsdefaults.ejs %>
+  </body>
+</html>
