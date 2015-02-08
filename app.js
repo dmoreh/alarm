@@ -3,6 +3,8 @@ var multer  = require('multer');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var schedule = require('node-schedule');
+var pythonShell = require('python-shell');
+var shell = require('shelljs');
 
 mongoose.connect('mongodb://localhost/test');
 var db = mongoose.connection;
@@ -163,9 +165,32 @@ var update_schedule = function() {
 };
 
 var soundAlarm = function() {
-	console.log("\n\n\n\n\nBEEP BEEP BEEP\n\n\n\n");
+	pickRecording(function(rec) {
+		var path = rec.path
+		shell.exec('mpg321 ' + path, function (code, output) {
+			console.log('finished');
+		 	rec.played = true;
+		 	console.log(rec);
+			rec.save(function (err, recording) {
+				if (err) return console.error(err);
+				console.log('recording saved to db: ' + recording);
+			});
+		});
+	});
 };
+
+var pickRecording = function(callback) {
+	Recording.find({'played': false}, function (err, unplayed) {
+		if (err || (unplayed.length < 1)) {
+			Recording.find({}, function (err, all) {
+				return callback(all[0]);
+			});
+		}
+		return callback(unplayed[0]);
+	});
+}
 
 var server = app.listen(3000, function() {
 	console.log('Listening on port 3000 yo');
+	soundAlarm();
 });
