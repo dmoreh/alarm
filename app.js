@@ -89,7 +89,7 @@ app.get('/admin', function(req, res) {
 			}
 		}
 		res.render('admin', {
-			title: "Admin",
+			title: "Alarms",
 			classname: "admin",
 			alarms: alarms
 		});
@@ -183,6 +183,7 @@ var pickRecording = function(callback) {
 	Recording.find({'played': false}, function (err, unplayed) {
 		if (err || (unplayed.length < 1)) {
 			Recording.find({}, function (err, all) {
+				// TODO: this fails if there are no recordings.
 				return callback(all[0]);
 			});
 		}
@@ -192,5 +193,4 @@ var pickRecording = function(callback) {
 
 var server = app.listen(3000, function() {
 	console.log('Listening on port 3000 yo');
-	soundAlarm();
 });
