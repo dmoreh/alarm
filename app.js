@@ -117,9 +117,11 @@ app.post('/set_alarm', function(req, res) {
 			alarm.save(function (err, alarm) {
 				if (err) return console.error(err);
 				console.log('alarm saved to db: ' + alarm);
-
-				// TODO: figure out sync issues so this can be done at end of loop. 
-				update_schedule();
+				
+				// TODO: figure out sync issues so this can be done at end of loop.
+				if (dayOfWeek == arr.length - 1) {
+					update_schedule();
+				}
 			});
 		});
 
@@ -155,7 +157,6 @@ var update_schedule = function() {
 			var job = schedule.scheduleJob(rule, function() {
 				soundAlarm();
 			});
-			console.log(job);
 			jobs.push(job);
   		}
 	});
